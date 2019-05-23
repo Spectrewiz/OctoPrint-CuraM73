@@ -19,7 +19,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
         self._time_left = 0
         self._repeat_timer = None
 
-        super.__init__()
+        super(CuraM73Plugin, self).__init__()
 
     @property
     def commands(self):
