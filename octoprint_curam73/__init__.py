@@ -12,7 +12,6 @@ __plugin_name__ = 'OctoPrint-CuraM73'
 class CuraM73Plugin(plugin.EventHandlerPlugin,
                     plugin.SettingsPlugin):
     def __init__(self):
-        self._last_updated = 0.0
         self._command_format = ['M73 P{0} R{1}', 'M73 Q{0} S{1}']
         self._data_update_time = 0.0
         self._data = None
@@ -24,7 +23,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
 
     @property
     def commands(self):
-        return self._cmd_format(self._progress, self._time_left)
+        return self._cmd_format(self.progress, self.time_left)
 
     @property
     def data(self):
@@ -35,7 +34,10 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
 
     @property
     def progress(self):
-        self._progress = int(round(self.data['progress']['completion']))
+        try:
+            self._progress = int(round(self.data['progress']['completion']))
+        except TypeError:
+            self._progress = 0
         return self._progress
 
     @property
@@ -53,7 +55,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
 
     def on_event(self, event, payload):
         if event == Events.PRINT_STARTED:
-            file_name = self.data['job']['file']['name']
+            file_name = self._printer.get_current_data()['job']['file']['name']
             if file_name.lower().startswith(self._settings.get(['cura_prefix']).lower()):
                 self._repeat_timer = util.RepeatedTimer(self._settings.get_int(['update_interval']), self.do_work)
                 self._repeat_timer.start()
