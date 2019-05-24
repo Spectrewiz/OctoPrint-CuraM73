@@ -60,12 +60,12 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
                     self._logger.info('{} is a Cura file, enabling M73'.format(file_name))
                 else:
                     self._logger.info('{} is not a Cura file, disabling M73'.format(file_name))
-                
+
             elif event in (Events.PRINT_DONE, Events.PRINT_FAILED, Events.PRINT_CANCELLED):
                 if self._repeat_timer != None:
                     self._repeat_timer.cancel()
                     self._repeat_timer = None
-                    self._printer.commands(self._cmd_format(100, 0))
+
         except Exception as e:
             self._logger.info('Caught an exception {0}\nTraceback:{1}'.format(e,traceback.format_exc()))
 
