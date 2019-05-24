@@ -89,7 +89,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
     def get_update_information(self):
         return dict(
             curam73 = dict(
-                displayName = 'OctoPrint-CuraM73',
+                displayName = self._plugin_name,
                 displayVersion = self._plugin_version,
 
                 type = 'github_release',
@@ -107,5 +107,5 @@ def __plugin_load__():
 
     global __plugin_hooks__
     __plugin_hooks__ = {
-        'octoprint.plugin.softwareupdate.check_config': __plugin_implementation__.get_update_information()
+        'octoprint.plugin.softwareupdate.check_config': __plugin_implementation__.get_update_information
     }
