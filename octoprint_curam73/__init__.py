@@ -7,8 +7,6 @@ import octoprint.util as util
 
 from octoprint.events import Events
 
-__plugin_name__ = 'OctoPrint-CuraM73'
-
 class CuraM73Plugin(plugin.EventHandlerPlugin,
                     plugin.SettingsPlugin):
     def __init__(self):
@@ -86,7 +84,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
     def get_update_information(self):
         return dict(
             curam73 = dict(
-                displayName = __plugin_name__,
+                displayName = self._plugin_name,
                 displayVersion = self._plugin_version,
 
                 type = 'github_release',
