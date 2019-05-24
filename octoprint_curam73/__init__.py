@@ -83,7 +83,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
     def get_settings_defaults(self):
         return dict(
             update_interval = 30,
-            cura_prefix = 'OPIMK3'
+            cura_prefix = 'OPI3MK3'
         )
 
     def get_update_information(self):
