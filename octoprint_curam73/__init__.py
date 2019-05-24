@@ -84,13 +84,13 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
     def get_update_information(self):
         return dict(
             curam73 = dict(
-                displayName = self._plugin_name,
-                displayVersion = self._plugin_version,
+                displayName = __plugin_name__,
+                displayVersion = __plugin_version__,
 
                 type = 'github_release',
                 user = 'Spectrewiz',
                 repo = 'OctoPrint-CuraM73',
-                current = self._plugin_version,
+                current = __plugin_version__,
 
                 pip = 'https://github.com/Spectrewiz/OctoPrint-CuraM73/archive/{target_version}.zip'
             )
