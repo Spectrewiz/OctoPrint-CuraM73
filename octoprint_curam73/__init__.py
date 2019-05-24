@@ -18,8 +18,6 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
         self._time_left = 0
         self._repeat_timer = None
 
-        super(CuraM73Plugin, self).__init__()
-
     @property
     def commands(self):
         return self._cmd_format(self.progress, self.time_left)
@@ -91,13 +89,13 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
     def get_update_information(self):
         return dict(
             curam73 = dict(
-                displayName = __plugin_name__,
-                displayVersion = __plugin_version__,
+                displayName = 'OctoPrint-CuraM73',
+                displayVersion = self._plugin_version,
 
                 type = 'github_release',
                 user = 'Spectrewiz',
                 repo = 'OctoPrint-CuraM73',
-                current = __plugin_version__,
+                current = self._plugin_version,
 
                 pip = 'https://github.com/Spectrewiz/OctoPrint-CuraM73/archive/{target_version}.zip'
             )
