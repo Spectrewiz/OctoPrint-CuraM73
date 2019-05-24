@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import time
+import traceback
 import octoprint.plugin as plugin
 import octoprint.util as util
 
@@ -52,25 +53,31 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
         return self._time_left
 
     def on_event(self, event, payload):
-        if event == Events.PRINT_STARTED:
-            file_name = self._printer.get_current_data()['job']['file']['name']
-            if file_name.lower().startswith(self._settings.get(['cura_prefix']).lower()):
-                self._repeat_timer = util.RepeatedTimer(self._settings.get_int(['update_interval']), self.do_work)
-                self._repeat_timer.start()
-                self._logger.info('{} is a Cura file, enabling M73'.format(file_name))
-            else:
-                self._logger.info('{} is not a Cura file, disabling M73'.format(file_name))
-            
-        elif event in (Events.PRINT_DONE, Events.PRINT_FAILED, Events.PRINT_CANCELLED):
-            if self._repeat_timer != None:
-                self._repeat_timer.cancel()
-                self._repeat_timer = None
-                self._printer.commands(self._cmd_format(100, 0))
+        try:
+            if event == Events.PRINT_STARTED:
+                file_name = self._printer.get_current_data()['job']['file']['name']
+                if file_name.lower().startswith(self._settings.get(['cura_prefix']).lower()):
+                    self._repeat_timer = util.RepeatedTimer(self._settings.get_int(['update_interval']), self.do_work)
+                    self._repeat_timer.start()
+                    self._logger.info('{} is a Cura file, enabling M73'.format(file_name))
+                else:
+                    self._logger.info('{} is not a Cura file, disabling M73'.format(file_name))
+                
+            elif event in (Events.PRINT_DONE, Events.PRINT_FAILED, Events.PRINT_CANCELLED):
+                if self._repeat_timer != None:
+                    self._repeat_timer.cancel()
+                    self._repeat_timer = None
+                    self._printer.commands(self._cmd_format(100, 0))
+        except Exception as e:
+            self._logger.info('Caught an exception {0}\nTraceback:{1}'.format(e,traceback.format_exc()))
 
     def do_work(self):
-        if self._printer.is_printing():
-            self._printer.commands(self.commands)
-            self._logger.info('Updating progress')
+        try:
+            if self._printer.is_printing():
+                self._printer.commands(self.commands)
+                self._logger.info('Updating progress')
+        except Exception as e:
+            self._logger.info('Caught an exception {0}\nTraceback:{1}'.format(e,traceback.format_exc()))
 
     def _cmd_format(self, *data):
         return [cmd.format(*data) for cmd in self._command_format]
