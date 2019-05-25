@@ -9,7 +9,8 @@ import octoprint.util as util
 from octoprint.events import Events
 
 class CuraM73Plugin(plugin.EventHandlerPlugin,
-                    plugin.SettingsPlugin):
+                    plugin.SettingsPlugin,
+                    plugin.TemplatePlugin):
     def __init__(self):
         self._command_format = ['M73 P{0} R{1}', 'M73 Q{0} S{1}']
         self._data_update_time = 0.0
@@ -17,6 +18,8 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
         self._progress = 0
         self._time_left = 0
         self._repeat_timer = None
+
+        super(CuraM73Plugin, self).__init__()
 
     @property
     def commands(self):
@@ -65,7 +68,6 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
                 if self._repeat_timer != None:
                     self._repeat_timer.cancel()
                     self._repeat_timer = None
-
         except Exception as e:
             self._logger.info('Caught an exception {0}\nTraceback:{1}'.format(e,traceback.format_exc()))
 
@@ -100,6 +102,11 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
                 pip = 'https://github.com/Spectrewiz/OctoPrint-CuraM73/archive/{target_version}.zip'
             )
         )
+
+    def get_template_configs(self):
+        return [
+            dict(type="settings", custom_bindings=False)
+        ]
 
 def __plugin_load__():
     global __plugin_implementation__
