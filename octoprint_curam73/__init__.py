@@ -3,10 +3,11 @@ from __future__ import absolute_import
 
 import time
 import traceback
+
 import octoprint.plugin as plugin
 import octoprint.util as util
-
 from octoprint.events import Events
+
 
 class CuraM73Plugin(plugin.EventHandlerPlugin,
                     plugin.SettingsPlugin,
@@ -107,6 +108,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
         return [
             dict(type="settings", custom_bindings=False)
         ]
+
 
 def __plugin_load__():
     global __plugin_implementation__
