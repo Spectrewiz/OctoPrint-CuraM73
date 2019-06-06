@@ -2,7 +2,7 @@
 plugin_identifier = 'curam73'
 plugin_package = 'octoprint_curam73'
 plugin_name = 'OctoPrint-CuraM73'
-plugin_version = '0.0.6'
+plugin_version = '0.0.7'
 plugin_description = '''Enables M73 Support for Cura'''
 plugin_author = 'Nelson Downs'
 plugin_author_email = 'n3150n.email@gmail.com'
