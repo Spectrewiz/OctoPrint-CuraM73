@@ -77,7 +77,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
     def do_work(self):
         if self._printer.is_printing():
             self._printer.commands(self.commands)
-            self.log('Updating progress: P{} R{}'.format(self.progress, self.time_left))
+            self.log('Updating progress: {}%, {} minutes remaining'.format(self.progress, self.time_left))
 
     def log(self, msg):
         self._logger.info(msg)
@@ -115,7 +115,9 @@ def handle_gracefully(func):
             func(*args, **kwargs)
         except Exception as e:
             global __plugin_implementation__
-            __plugin_implementation__.log('Caught an exception {0}\nTraceback:\n{1}'.format(e, traceback.format_exc()))
+            __plugin_implementation__.log('Caught an exception "{}"'.format(e))
+            for trace in traceback.format_exc().splitlines():
+                __plugin_implementation__.log(trace)
     return graceful
 
 
