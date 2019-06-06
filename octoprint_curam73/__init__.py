@@ -13,7 +13,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
                     plugin.SettingsPlugin,
                     plugin.TemplatePlugin):
     def __init__(self):
-        self._command_format = ['M73 P{0} R{1}', 'M73 Q{0} S{1}']
+        self._command_format = ['M73 P{0} R{1} Q{0} S{1}']
         self._data_update_time = 0.0
         self._data = None
         self._progress = 0
@@ -24,7 +24,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
 
     @property
     def commands(self):
-        return self._cmd_format(self.progress, self.time_left)
+        return [cmd.format(self.progress, self.time_left) for cmd in self._command_format]
 
     @property
     def data(self):
