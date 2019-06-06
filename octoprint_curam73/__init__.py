@@ -63,7 +63,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
                 self._repeat_timer.start()
                 self.log('{} is a Cura file, enabling M73'.format(file_name))
             else:
-                self.log('{} is not a Cura file, disabling M73'.format(file_name))
+                self.log('{} is not a Cura file, not using M73'.format(file_name))
 
         elif event in (Events.PRINT_DONE, Events.PRINT_FAILED, Events.PRINT_CANCELLED):
             if self._repeat_timer != None:
