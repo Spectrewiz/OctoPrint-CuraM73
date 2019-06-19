@@ -9,6 +9,18 @@ import octoprint.util as util
 from octoprint.events import Events
 
 
+def handle_gracefully(func):
+    def graceful(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except Exception as e:
+            global __plugin_implementation__
+            __plugin_implementation__.log('Caught an exception "{}"'.format(e))
+            for trace in traceback.format_exc().splitlines():
+                __plugin_implementation__.log(trace)
+    return graceful
+
+
 class CuraM73Plugin(plugin.EventHandlerPlugin,
                     plugin.SettingsPlugin,
                     plugin.TemplatePlugin):
@@ -107,18 +119,6 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
         return [
             dict(type="settings", custom_bindings=False)
         ]
-
-
-def handle_gracefully(func):
-    def graceful(*args, **kwargs):
-        try:
-            func(*args, **kwargs)
-        except Exception as e:
-            global __plugin_implementation__
-            __plugin_implementation__.log('Caught an exception "{}"'.format(e))
-            for trace in traceback.format_exc().splitlines():
-                __plugin_implementation__.log(trace)
-    return graceful
 
 
 def __plugin_load__():
