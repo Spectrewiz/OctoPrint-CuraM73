@@ -8,8 +8,11 @@ import octoprint.plugin as plugin
 import octoprint.util as util
 from octoprint.events import Events
 
+from functools import wraps
+
 
 def handle_gracefully(func):
+    @wraps(func)
     def graceful(*args, **kwargs):
         try:
             func(*args, **kwargs)
@@ -97,7 +100,7 @@ class CuraM73Plugin(plugin.EventHandlerPlugin,
     def get_settings_defaults(self):
         return dict(
             update_interval = 15,
-            cura_prefix = 'OPI3MK3'
+            cura_prefix = 'OPI3MK3S'
         )
 
     def get_update_information(self):
